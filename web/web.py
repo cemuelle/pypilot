@@ -61,7 +61,6 @@ socketio = SocketIO(app, async_mode=async_mode, cors_allowed_origins="*")
 
 try:
     from flask_babel import Babel, gettext
-    babel = Babel(app)
 
     LANGUAGES = os.listdir(os.path.dirname(os.path.abspath(__file__)) + '/translations')
 
