@@ -7,7 +7,8 @@
 # License as published by the Free Software Foundation; either
 # version 3 of the License, or (at your option) any later version.  
 
-from flask import Flask, render_template, request, Markup
+from flask import Flask, render_template, request
+from markupsafe import Markup
 from flask_socketio import SocketIO, Namespace, emit, disconnect
 import time, math, select, os
 
@@ -88,13 +89,12 @@ default_actions = \
 
 try:
     from flask_babel import Babel, gettext
-    babel = Babel(app)
 
     LANGUAGES = os.listdir(os.path.dirname(os.path.abspath(__file__)) + '/translations')
 
-    @babel.localeselector
     def get_locale():
         return request.accept_languages.best_match(LANGUAGES)
+    babel = Babel(app, locale_selector=get_locale)
     
 except Exception as e:
     print('failed to import flask_babel, translations not possible!!', e)

@@ -65,7 +65,6 @@ try:
 
     LANGUAGES = os.listdir(os.path.dirname(os.path.abspath(__file__)) + '/translations')
 
-    @babel.localeselector
     def get_locale():
         if 'language' in config:
             language = config['language']
@@ -74,6 +73,7 @@ try:
         if language == 'default' or not language in LANGUAGES:
             return request.accept_languages.best_match(LANGUAGES)
         return language
+    babel = Babel(app, locale_selector=get_locale)
     
 except Exception as e:
     print('failed to import flask_babel, translations not possible!!', e)
