@@ -116,12 +116,16 @@ def create_character(fontpath, size, c, bypp, crop, bpp):
         exit(0)
 
     ifont = ImageFont.truetype(fontpath, size)
-    size = ifont.getsize(c)
+    bbox = ifont.getbbox(c)
+    size = (bbox[2]-bbox[0], bbox[3]-bbox[1])
     image = Image.new('RGBA', size)
     draw = ImageDraw.Draw(image)
     draw.text((0, 0), c, font=ifont)
 
     if crop:
+        # guard against zero-sized glyph bitmaps (Pillow may return empty bbox for some chars)
+        if image.size[0] < 1 or image.size[1] < 1:
+            image = Image.new(image.mode, (1, 1), 0)
         bg = Image.new(image.mode, image.size, image.getpixel((0, 0)))
         diff = ImageChops.difference(image, bg)
         bbox = diff.getbbox()
