@@ -6,7 +6,14 @@
 # modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation; either
 # version 3 of the License, or (at your option) any later version.
-import gettext_loader
+try:
+    from . import gettext_loader
+except Exception:
+    try:
+        import gettext_loader
+    except Exception:
+        import builtins
+        builtins.__dict__.setdefault('_', lambda x: x)
 
 try:
     import ujson

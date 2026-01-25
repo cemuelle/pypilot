@@ -16,12 +16,13 @@
 from evdev import InputDevice, list_devices
 
 
-def select_device(device_spec) -> InputDevice | None:
+from typing import Optional
+def select_device(device_spec) -> Optional[InputDevice]:
     """
     Selects a device based on the provided path or MAC address.
     """
     try:
-        device: InputDevice | None = None
+        device: Optional[InputDevice] = None
         if "/" in device_spec:
             device = InputDevice(device_spec)
         else:
@@ -35,7 +36,7 @@ def select_device(device_spec) -> InputDevice | None:
         return None
 
 
-def select_device_interactive() -> InputDevice | None:
+def select_device_interactive() -> Optional[InputDevice]:
     """
     Interactively select a device from the list of available devices.
     """

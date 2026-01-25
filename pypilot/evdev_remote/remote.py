@@ -68,6 +68,7 @@ import threading
 
 
 from evdev import categorize, ecodes, InputDevice
+from typing import List, Optional
 
 from .device_selection import select_device, select_device_interactive
 from .pypilot_state import Action, pypilot_comms_loop, queue_action
@@ -132,7 +133,7 @@ async def grab_and_handle_events_for_device(device: InputDevice):
 
 
 def main() -> int:
-    selected_devices: list[InputDevice | None] = []
+    selected_devices: List[Optional[InputDevice]] = []
     if len(sys.argv) > 1:
         selected_devices = [select_device(arg) for arg in sys.argv[1:]]
     else:

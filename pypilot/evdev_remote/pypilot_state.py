@@ -18,7 +18,7 @@ from enum import Enum
 
 from pypilot.client import pypilotClientFromArgs
 from queue import Queue, Empty
-from typing import TypedDict
+from typing import TypedDict, Union
 from .log_config import logger
 
 HOST = "localhost"
@@ -58,7 +58,7 @@ def state_changed_significantly(old_ap_state: APState, new_ap_state: APState) ->
     )
 
 
-def update_state_from_readings(datum: str, value: str | float | bool):
+def update_state_from_readings(datum: str, value: Union[str, float, bool]):
     old_ap_state = ap_state.copy()
     if datum == "ap.heading":
         ap_state["ap_heading"] = float(value)
