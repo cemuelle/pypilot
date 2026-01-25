@@ -81,8 +81,29 @@ def update_firmware(config):
     if not 'arduino_firmware_version' in config:
         print('cannot update firmware until version is known')
         return
+    def _coerce_version(value, label):
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            print('invalid', label, 'version:', value)
+            return None
 
-    if config['arduino_firmware_version_available'] <= config['arduino_firmware_version']:
+    available_version = _coerce_version(
+        config.get('arduino_firmware_version_available'),
+        'available firmware'
+    )
+    current_version = _coerce_version(
+        config.get('arduino_firmware_version'),
+        'current firmware'
+    )
+    if available_version is None or current_version is None:
+        print('cannot compare firmware versions')
+        return
+
+    config['arduino_firmware_version_available'] = available_version
+    config['arduino_firmware_version'] = current_version
+
+    if available_version <= current_version:
         print('firmware up to date')
         return
 
